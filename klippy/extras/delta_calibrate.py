@@ -62,7 +62,7 @@ def calc_stable_position(coord, delta_params):
 def load_config_stable(config, option):
     spos = config.get(option)
     try:
-        sa, sb, sc = map(float, spos.split(','))
+        sa, sb, sc = list(map(float, spos.split(',')))
     except:
         msg = "Unable to parse stable position '%s'" % (spos,)
         logging.exception(msg)
@@ -98,8 +98,8 @@ def measurements_to_distances(measured_params, delta_params):
         od - opw
         for od, opw in zip(mp['OUTER_DISTS'], mp['OUTER_PILLAR_WIDTHS']) ]
     # Convert angles in degrees to an XY multiplier
-    obj_angles = map(math.radians, MeasureAngles)
-    xy_angles = zip(map(math.cos, obj_angles), map(math.sin, obj_angles))
+    obj_angles = list(map(math.radians, MeasureAngles))
+    xy_angles = list(zip(list(map(math.cos, obj_angles)), list(map(math.sin, obj_angles))))
     # Calculate stable positions for center measurements
     inner_ridge = MeasureRidgeRadius * scale
     inner_pos = [(ax * inner_ridge, ay * inner_ridge, 0.)
@@ -297,12 +297,12 @@ class DeltaCalibrate:
         # Parse distance measurements
         args = {'CENTER_DISTS': 6, 'CENTER_PILLAR_WIDTHS': 3,
                 'OUTER_DISTS': 6, 'OUTER_PILLAR_WIDTHS': 6, 'SCALE': 1}
-        for name, count in args.items():
+        for name, count in list(args.items()):
             if name not in params:
                 continue
             data = self.gcode.get_str(name, params)
             try:
-                parts = map(float, data.split(','))
+                parts = list(map(float, data.split(',')))
             except:
                 raise self.gcode.error("Unable to parse parameter '%s'" % (
                     name,))

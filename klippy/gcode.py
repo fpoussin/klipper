@@ -549,8 +549,8 @@ class GCodeParser:
     def cmd_G92(self, params):
         # Set position
         offsets = { p: self.get_float(a, params)
-                    for a, p in self.axis2pos.items() if a in params }
-        for p, offset in offsets.items():
+                    for a, p in list(self.axis2pos.items()) if a in params }
+        for p, offset in list(offsets.items()):
             if p == 3:
                 offset *= self.extrude_factor
             self.base_position[p] = self.last_position[p] - offset
@@ -575,7 +575,7 @@ class GCodeParser:
         self.extrude_factor = new_extrude_factor
     cmd_SET_GCODE_OFFSET_help = "Set a virtual offset to g-code positions"
     def cmd_SET_GCODE_OFFSET(self, params):
-        for axis, pos in self.axis2pos.items():
+        for axis, pos in list(self.axis2pos.items()):
             if axis in params:
                 offset = self.get_float(axis, params)
             elif axis + '_ADJUST' in params:
@@ -591,7 +591,7 @@ class GCodeParser:
         # Offset axes
         offsets = { self.axis2pos[a]: self.get_float(a, params)
                     for a in 'XYZ' if a in params }
-        for p, offset in offsets.items():
+        for p, offset in list(offsets.items()):
             self.base_position[p] -= self.homing_position[p] + offset
             self.homing_position[p] = -offset
     # G-Code temperature and fan commands
@@ -627,7 +627,7 @@ class GCodeParser:
         # Get Firmware Version and Capabilities
         software_version = self.printer.get_start_args().get('software_version')
         kw = {"FIRMWARE_NAME": "Klipper", "FIRMWARE_VERSION": software_version}
-        self.ack(" ".join(["%s:%s" % (k, v) for k, v in kw.items()]))
+        self.ack(" ".join(["%s:%s" % (k, v) for k, v in list(kw.items())]))
     cmd_IGNORE_when_not_ready = True
     cmd_IGNORE_aliases = ["G21", "M110", "M21"]
     def cmd_IGNORE(self, params):

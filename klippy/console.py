@@ -58,7 +58,7 @@ class KeyboardReader:
             len(msgparser.messages_by_id),
             msgparser.version, msgparser.build_versions))
         self.output("MCU config: %s" % (" ".join(
-            ["%s=%s" % (k, v) for k, v in msgparser.config.items()])))
+            ["%s=%s" % (k, v) for k, v in list(msgparser.config.items())])))
         self.clocksync.connect(self.ser)
         self.ser.handle_default = self.handle_default
         self.ser.register_callback(self.handle_output, '#output')

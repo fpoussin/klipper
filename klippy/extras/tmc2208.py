@@ -193,7 +193,7 @@ class TMC2208:
             "tmcuart_send oid=%c write=%*s read=%c", cq=cmd_queue)
     def printer_state(self, state):
         if state == 'connect':
-            for reg_name, val in self.init_regs.items():
+            for reg_name, val in list(self.init_regs.items()):
                 self.set_register(reg_name, val)
     def get_register(self, reg_name):
         reg = Registers[reg_name]

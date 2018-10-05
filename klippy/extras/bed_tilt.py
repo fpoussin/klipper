@@ -71,7 +71,7 @@ class BedTiltCalibrate:
                 total_error += adjusted_height(pos, params)**2
             return total_error
         new_params = mathutil.coordinate_descent(
-            params.keys(), params, errorfunc)
+            list(params.keys()), params, errorfunc)
         # Update current bed_tilt calculations
         x_adjust = new_params['x_adjust']
         y_adjust = new_params['y_adjust']

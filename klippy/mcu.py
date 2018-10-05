@@ -605,7 +605,7 @@ class MCU:
                 name, len(msgparser.messages_by_id),
                 msgparser.version, msgparser.build_versions),
             "MCU '%s' config: %s" % (name, " ".join(
-                ["%s=%s" % (k, v) for k, v in msgparser.config.items()]))]
+                ["%s=%s" % (k, v) for k, v in list(msgparser.config.items())]))]
         logging.info("\n".join(log_info))
         self._mcu_freq = self.get_constant_float('CLOCK_FREQ')
         self._stats_sumsq_base = self.get_constant_float('STATS_SUMSQ_BASE')
@@ -790,7 +790,7 @@ or in response to an internal error in the host software.""",
 }
 
 def error_help(msg):
-    for prefixes, help_msg in Common_MCU_errors.items():
+    for prefixes, help_msg in list(Common_MCU_errors.items()):
         for prefix in prefixes:
             if msg.startswith(prefix):
                 return help_msg

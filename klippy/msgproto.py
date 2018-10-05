@@ -190,7 +190,7 @@ class MessageParser:
         self.config = {}
         self.version = self.build_versions = ""
         self.raw_identify_data = ""
-        self._init_messages(DefaultMessages, DefaultMessages.keys())
+        self._init_messages(DefaultMessages, list(DefaultMessages.keys()))
     def check_packet(self, s):
         if len(s) < MESSAGE_MIN:
             return 0
@@ -280,7 +280,7 @@ class MessageParser:
             raise error("Unknown command: %s" % (msgname,))
         try:
             argparts = dict(arg.split('=', 1) for arg in parts[1:])
-            for name, value in argparts.items():
+            for name, value in list(argparts.items()):
                 t = mp.name_to_type[name]
                 if t.is_int:
                     tval = int(value, 0)
@@ -297,7 +297,7 @@ class MessageParser:
             raise error("Unable to encode: %s" % (msgname,))
         return cmd
     def _init_messages(self, messages, parsers):
-        for msgid, msgformat in messages.items():
+        for msgid, msgformat in list(messages.items()):
             msgid = int(msgid)
             if msgid not in parsers:
                 self.messages_by_id[msgid] = OutputFormat(msgid, msgformat)
@@ -317,7 +317,7 @@ class MessageParser:
             responses = data.get('responses')
             self._init_messages(messages, commands+responses)
             static_strings = data.get('static_strings', {})
-            self.static_strings = { int(k): v for k, v in static_strings.items() }
+            self.static_strings = { int(k): v for k, v in list(static_strings.items()) }
             self.config.update(data.get('config', {}))
             self.version = data.get('version', '')
             self.build_versions = data.get('build_versions', '')

@@ -7,7 +7,7 @@
 import logging
 import math
 import json
-import probe
+from . import probe
 import collections
 
 class BedMeshError(Exception):
@@ -221,7 +221,7 @@ class BedMeshCalibrate:
                     for line in z_values if line.strip()]
             self.profiles[name]['probe_params'] = params = \
                 collections.OrderedDict()
-            for key, value in self.probe_params.iteritems():
+            for key, value in list(self.probe_params.items()):
                 if type(value) is int:
                     params[key] = profile.getint(key)
                 elif type(value) is float:
@@ -244,7 +244,7 @@ class BedMeshCalibrate:
                 z_values += "%.6f, " % p
             z_values = z_values[:-2]
         configfile.set(cfg_name, 'points', z_values)
-        for key, value in self.probe_params.iteritems():
+        for key, value in list(self.probe_params.items()):
             configfile.set(cfg_name, key, value)
         # save copy in local storage
         self.profiles[prof_name] = profile = {}
@@ -440,7 +440,7 @@ class ZMesh:
         self.mesh_z_table = None
         self.probe_params = params
         logging.debug('bed_mesh: probe/mesh parameters:')
-        for key, value in self.probe_params.iteritems():
+        for key, value in list(self.probe_params.items()):
             logging.debug("%s :  %s" % (key, value))
         self.mesh_x_min = params['min_x'] + params['x_offset']
         self.mesh_x_max = params['max_x'] + params['x_offset']

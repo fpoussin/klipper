@@ -128,7 +128,7 @@ class Printer:
         # Validate that there are no undefined parameters in the config file
         pconfig.check_unused_options(config)
         # Determine which printer objects have state callbacks
-        self.state_cb = [o.printer_state for o in self.objects.values()
+        self.state_cb = [o.printer_state for o in list(self.objects.values())
                          if hasattr(o, 'printer_state')]
     def _connect(self, eventtime):
         try:

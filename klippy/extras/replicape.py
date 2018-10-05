@@ -159,7 +159,7 @@ class Replicape:
                 prefix + 'current', above=0., maxval=REPLICAPE_MAX_CURRENT)
             self.stepper_dacs[channel] = cur / REPLICAPE_MAX_CURRENT
             self.pins[prefix + 'enable'] = (ReplicapeDACEnable, channel)
-        self.enabled_channels = {ch: False for cl, ch in self.pins.values()}
+        self.enabled_channels = {ch: False for cl, ch in list(self.pins.values())}
         if config.getboolean('servo0_enable', False):
             shift_registers[1] |= 1
         if config.getboolean('servo1_enable', False):
@@ -201,7 +201,7 @@ class Replicape:
             return
         self.enabled_channels[channel] = is_enable
         # Check if need to set the pca9685 enable pin
-        on_channels = [1 for c, e in self.enabled_channels.items() if e]
+        on_channels = [1 for c, e in list(self.enabled_channels.items()) if e]
         if not on_channels:
             self.mcu_pwm_enable.set_digital(print_time, 0)
         elif is_enable and len(on_channels) == 1:
@@ -209,7 +209,7 @@ class Replicape:
         # Check if need to set the stepper enable lines
         if channel not in self.stepper_dacs:
             return
-        on_dacs = [1 for c in self.stepper_dacs.keys()
+        on_dacs = [1 for c in list(self.stepper_dacs.keys())
                    if self.enabled_channels[c]]
         if not on_dacs:
             sr = self.sr_disabled

@@ -256,7 +256,7 @@ class PrinterHeaters:
     cmd_TURN_OFF_HEATERS_help = "Turn off all heaters"
     def cmd_TURN_OFF_HEATERS(self, params):
         print_time = self.printer.lookup_object('toolhead').get_last_move_time()
-        for heater in self.heaters.values():
+        for heater in list(self.heaters.values()):
             heater.set_temp(print_time, 0.)
 
 def add_printer_objects(config):

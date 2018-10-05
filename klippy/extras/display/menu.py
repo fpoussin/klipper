@@ -179,7 +179,7 @@ class MenuElement(object):
 
     def _lines_aslist(self, value, default=[]):
         if isinstance(value, str):
-            value = filter(None, [x.strip() for x in value.splitlines()])
+            value = [_f for _f in [x.strip() for x in value.splitlines()] if _f]
         try:
             return list(value)
         except Exception:
@@ -188,7 +188,7 @@ class MenuElement(object):
 
     def _words_aslist(self, value, sep=',', default=[]):
         if isinstance(value, str):
-            value = filter(None, [x.strip() for x in value.split(sep)])
+            value = [_f for _f in [x.strip() for x in value.split(sep)] if _f]
         try:
             return list(value)
         except Exception:
@@ -400,10 +400,10 @@ class MenuItem(MenuElement):
                 elif fname == 'choose' and isinstance(o, tuple) and len(o) > 2:
                     # int chooser for list
                     fn = chooser(o, int, index)
-                elif (fname == 'choose' and isinstance(o, dict) and o.keys()
-                        and isinstance(o.keys()[0], (int, float, str))):
+                elif (fname == 'choose' and isinstance(o, dict) and list(o.keys())
+                        and isinstance(list(o.keys())[0], (int, float, str))):
                     # chooser, cast type by first key type
-                    fn = chooser(o, type(o.keys()[0]), index)
+                    fn = chooser(o, type(list(o.keys())[0]), index)
                 elif fname == 'scale' and isinstance(o, (float, int)):
                     # scaler, cast type depends from scale factor type
                     fn = scaler(o, type(o), index)
@@ -422,10 +422,10 @@ class MenuItem(MenuElement):
         return fn
 
     def _transform_aslist(self):
-        return list(filter(None, (
+        return list([_f for _f in (
             self._parse_transform(t) for t in self._aslist(
                 self.transform, flatten=False)
-        )))
+        ) if _f])
 
     def _parameter_aslist(self):
         lst = []
@@ -800,9 +800,9 @@ class MenuCard(MenuGroup):
         return self._lines_aslist(self.items)
 
     def _content_aslist(self):
-        return filter(None, [
+        return [_f for _f in [
             self._asliteral(s) for s in self._lines_aslist(self.content)
-        ])
+        ] if _f]
 
     def update_items(self):
         self._items = self._allitems[:]
@@ -1066,7 +1066,7 @@ class MenuManager:
         # all modules should have special reporting method (maybe get_status)
         # for available parameters
         # Only 2 level dot notation
-        for name in self.objs.keys():
+        for name in list(self.objs.keys()):
             try:
                 if self.objs[name] is not None:
                     class_name = str(self.objs[name].__class__.__name__)

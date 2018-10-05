@@ -3,15 +3,15 @@
 # Copyright (C) 2016-2018  Kevin O'Connor <kevin@koconnor.net>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-import os, re, time, logging, ConfigParser, StringIO
+import os, re, time, logging, configparser, io
 
-error = ConfigParser.Error
+error = configparser.Error
 
 class sentinel:
     pass
 
 class ConfigWrapper:
-    error = ConfigParser.Error
+    error = configparser.Error
     def __init__(self, printer, fileconfig, access_tracking, section):
         self.printer = printer
         self.fileconfig = fileconfig
@@ -150,12 +150,12 @@ class PrinterConfig:
                 lines[lineno] = '#' + lines[lineno]
         return "\n".join(lines)
     def _build_config_wrapper(self, data):
-        sfile = StringIO.StringIO(data)
-        fileconfig = ConfigParser.RawConfigParser()
+        sfile = io.StringIO(data)
+        fileconfig = configparser.RawConfigParser()
         fileconfig.readfp(sfile)
         return ConfigWrapper(self.printer, fileconfig, {}, 'printer')
     def _build_config_string(self, config):
-        sfile = StringIO.StringIO()
+        sfile = io.StringIO()
         config.fileconfig.write(sfile)
         return sfile.getvalue().strip()
     def read_config(self, filename):
