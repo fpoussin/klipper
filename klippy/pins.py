@@ -159,7 +159,7 @@ beagleboneblack_mappings = {
 def update_map_beaglebone(pins, mcu):
     if mcu != 'pru':
         raise error("Beaglebone aliases not supported on mcu '%s'" % (mcu,))
-    for pin, gpio in list(beagleboneblack_mappings.items()):
+    for pin, gpio in beagleboneblack_mappings.items():
         pins[pin] = pins[gpio]
 
 

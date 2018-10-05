@@ -400,7 +400,7 @@ class MenuItem(MenuElement):
                 elif fname == 'choose' and isinstance(o, tuple) and len(o) > 2:
                     # int chooser for list
                     fn = chooser(o, int, index)
-                elif (fname == 'choose' and isinstance(o, dict) and list(o.keys())
+                elif (fname == 'choose' and isinstance(o, dict) and o.keys()
                         and isinstance(list(o.keys())[0], (int, float, str))):
                     # chooser, cast type by first key type
                     fn = chooser(o, type(list(o.keys())[0]), index)
@@ -1066,7 +1066,7 @@ class MenuManager:
         # all modules should have special reporting method (maybe get_status)
         # for available parameters
         # Only 2 level dot notation
-        for name in list(self.objs.keys()):
+        for name in self.objs.keys():
             try:
                 if self.objs[name] is not None:
                     class_name = str(self.objs[name].__class__.__name__)

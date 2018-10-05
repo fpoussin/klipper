@@ -57,7 +57,7 @@ class ZTilt:
                 total_error += adjusted_height(pos, params)**2
             return total_error
         new_params = mathutil.coordinate_descent(
-            list(params.keys()), params, errorfunc)
+            params.keys(), params, errorfunc)
         # Apply results
         logging.info("Calculated bed tilt parameters: %s", new_params)
         x_adjust = new_params['x_adjust']

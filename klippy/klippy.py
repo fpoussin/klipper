@@ -82,7 +82,7 @@ class Printer:
         return default
     def lookup_objects(self, module=None):
         if module is None:
-            return list(self.objects.items())
+            return self.objects.items()
         prefix = module + ' '
         objs = [(n, self.objects[n])
                 for n in self.objects if n.startswith(prefix)]
@@ -128,7 +128,7 @@ class Printer:
         # Validate that there are no undefined parameters in the config file
         pconfig.check_unused_options(config)
         # Determine which printer objects have state callbacks
-        self.state_cb = [o.printer_state for o in list(self.objects.values())
+        self.state_cb = [o.printer_state for o in self.objects.values()
                          if hasattr(o, 'printer_state')]
     def _connect(self, eventtime):
         try:
